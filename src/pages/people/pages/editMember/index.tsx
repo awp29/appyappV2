@@ -4,7 +4,7 @@ import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 import { NavLink } from "react-router-dom";
 import MemberForm from "../memberForm";
 
-export default function AddMemberPage() {
+export default function EditMemberPage() {
   return (
     <DefaultLayout>
       <PageHeader withBreadcrumbs>
@@ -15,18 +15,27 @@ export default function AddMemberPage() {
           <BreadcrumbItem>
             <NavLink to="/people">People</NavLink>
           </BreadcrumbItem>
-          <BreadcrumbItem>Add</BreadcrumbItem>
+          <BreadcrumbItem>Edit</BreadcrumbItem>
         </Breadcrumbs>
 
         <div>
-          <PageHeader.Title>Add member</PageHeader.Title>
+          <PageHeader.Title>Edit member</PageHeader.Title>
           <PageHeader.Description>
-            Fill out a form, add a member to your team. Why not?!
+            Edit you team member, get them up to date
           </PageHeader.Description>
         </div>
       </PageHeader>
 
-      <MemberForm />
+      <MemberForm
+        defaultValues={{
+          firstName: "Alice",
+          lastName: "Smith",
+          email: "alice.smith@appyapp.com",
+          role: "designer",
+          team: "comet",
+          notes: "Alice smith notes!!!!!",
+        }}
+      />
     </DefaultLayout>
   );
 }

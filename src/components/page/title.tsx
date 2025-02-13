@@ -1,12 +1,13 @@
 import React from "react";
-import { title } from "@/components/primitives";
 
 interface TitleProps {
   children: React.ReactNode;
 }
 
 const Title: React.FC<TitleProps> = ({ children }) => {
-  return <h1 className={title({ size: "lg" })}>{children}</h1>;
+  return (
+    <h1 className={"text-4xl font-semibold text-default-900"}>{children}</h1>
+  );
 };
 
 export default Title;

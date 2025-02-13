@@ -20,7 +20,7 @@ const PageHeader: PageHeaderComponent = (props) => {
     <div
       className={clsx(
         "flex flex-col mb-14",
-        withBreadcrumbs ? "pt-12 gap-11" : "pt-28"
+        withBreadcrumbs ? "pt-7 gap-12" : "pt-24"
       )}
     >
       {children}

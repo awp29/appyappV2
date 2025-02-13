@@ -7,11 +7,17 @@ import {
   SettingsIcon,
 } from "@/components/icons";
 import { Navbar } from "@/components/navbar";
-import { NavLink as RouterNavLink } from "react-router-dom";
+import {
+  NavLink as RouterNavLink,
+  ScrollRestoration,
+  useLocation,
+} from "react-router-dom";
 import clsx from "clsx";
 import { link as linkStyles } from "@heroui/theme";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Link } from "@heroui/link";
+import Nav from "@/components/nav/nav";
+import { useLayoutEffect } from "react";
 
 interface NavLinkProps {
   children: React.ReactNode;
@@ -24,12 +30,10 @@ const NavLink: React.FC<NavLinkProps> = (props) => {
   return (
     <RouterNavLink
       className={({ isActive }) => {
-        console.log("isActive", isActive);
-
         return clsx(
           linkStyles({ color: "foreground" }),
           "h-12 text-medium",
-          isActive && "text-primary"
+          isActive && "font-bold"
         );
       }}
       to={to}
@@ -44,58 +48,44 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const location = useLocation();
+
+  // scroll to top of page after a page transition.
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
+
   return (
     <div className="flex w-full">
-      <div className="relative h-screen w-80">
-        <nav className="fixed bg-default-100 border-r border-default-200 px-6 h-full w-80">
-          <Link
-            className="flex justify-start items-center gap-1 my-6 mb-20 relative left-[-8px]"
-            color="foreground"
-            href="/"
-          >
-            <Logo />
-            <p className="font-bold text-inherit">APPY APP</p>
-          </Link>
+      <Nav>
+        <Nav.AppTitle />
 
-          <div className="flex flex-col gap-4">
-            <NavLink to="/">
-              <div className="flex items-center gap-3">
-                <PieChartIcon width={24} height={24} /> Dashboard
-              </div>
-            </NavLink>
+        <ul className="mt-12 flex flex-col gap-1">
+          <li>
+            <Nav.Link to="/">
+              <PieChartIcon size={20} /> Dashboard
+            </Nav.Link>
+          </li>
 
-            <NavLink to="/people">
-              <div className="flex items-center gap-3">
-                <PeopleIcon width={24} height={24} /> People
-              </div>
-            </NavLink>
+          <li>
+            <Nav.Link to="/people">
+              <PeopleIcon size={20} /> People
+            </Nav.Link>
+          </li>
 
-            <NavLink to="/settings">
-              <div className="flex items-center gap-3">
-                <SettingsIcon width={24} height={24} /> Settings
-              </div>
-            </NavLink>
-
-            <NavLink to="/help">
-              <div className="flex items-center gap-3">
-                <HelpIcon width={24} height={24} /> Help
-              </div>
-            </NavLink>
-          </div>
-        </nav>
-      </div>
-
+          <li>
+            <Nav.Link to="/settings">
+              <SettingsIcon size={20} /> Settings
+            </Nav.Link>
+          </li>
+        </ul>
+      </Nav>
       <div className="relative flex flex-1 flex-col h-screen">
-        {/* <Navbar /> */}
-
-        <div className="flex gap-2 items-center absolute right-6 h-16">
-          <Link isExternal href={"/blah"}>
-            <GithubIcon className="text-default-500" />
-          </Link>
+        <div className="flex gap-2 items-center absolute right-5 top-[26px]">
           <ThemeSwitch />
         </div>
 
-        <main className="container mx-auto max-w-7xl px-6 flex-grow pb-16">
+        <main className="container mx-auto max-w-7xl px-8 flex-grow pb-16">
           {children}
         </main>
       </div>

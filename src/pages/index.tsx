@@ -8,7 +8,7 @@ export default function DashbaordPage() {
         <div>
           <PageHeader.Title>Dashboard</PageHeader.Title>
           <PageHeader.Description>
-            Coming soon, probably...🤷‍♂️
+            Coming soon, probably... 🚧
           </PageHeader.Description>
         </div>
       </PageHeader>

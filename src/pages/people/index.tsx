@@ -26,23 +26,29 @@ const columnHelper = createColumnHelper<Person>();
 const columns = [
   columnHelper.display({
     id: "select-col",
-    size: 60,
+    size: 48,
     enableResizing: false,
     header: ({ table }) => (
-      <Checkbox
-        onChange={table.getToggleAllRowsSelectedHandler()}
-        checked={table.getIsAllRowsSelected()}
-        isSelected={table.getIsAllRowsSelected()}
-      />
+      <div className="flex items-center">
+        <Checkbox
+          onChange={table.getToggleAllRowsSelectedHandler()}
+          checked={table.getIsAllRowsSelected()}
+          isSelected={table.getIsAllRowsSelected()}
+          size="sm"
+        />
+      </div>
     ),
 
     cell: ({ row }) => {
       return (
-        <Checkbox
-          onChange={row.getToggleSelectedHandler()}
-          checked={row.getIsSelected()}
-          isSelected={row.getIsSelected()}
-        />
+        <div className="flex items-center">
+          <Checkbox
+            onChange={row.getToggleSelectedHandler()}
+            checked={row.getIsSelected()}
+            isSelected={row.getIsSelected()}
+            size="sm"
+          />
+        </div>
       );
     },
   }),
@@ -55,14 +61,14 @@ const columns = [
 
       return (
         <div className="flex flex-col">
-          <span className="text-default-900">{details[0]}</span>
-          <span>{details[1]}</span>
+          <span>{details[0]}</span>
+          <span className="text-tiny text-default-500">{details[1]}</span>
         </div>
       );
     },
   }),
   columnHelper.accessor("role", {
-    size: 200,
+    size: 256,
     enableResizing: false,
     header: () => <span>Role</span>,
     cell: (info) => <span>{info.getValue()}</span>,
@@ -88,10 +94,12 @@ const columns = [
   }),
   columnHelper.display({
     id: "actions-col",
-    size: 80,
+    size: 128,
     enableResizing: false,
-    header: () => <span className="block text-right pr-3">Actions</span>,
+    header: () => <span className="block text-right pr-2">Actions</span>,
     cell: () => {
+      const navigate = useNavigate();
+
       return (
         <span className="flex justify-end">
           <Tooltip
@@ -101,7 +109,13 @@ const columns = [
             content="Edit"
             color="foreground"
           >
-            <Button isIconOnly variant="light">
+            <Button
+              isIconOnly
+              variant="light"
+              onPress={() => {
+                navigate("/people/edit");
+              }}
+            >
               <EditIcon
                 className="stroke-current text-default-800"
                 width={16}
@@ -178,7 +192,7 @@ export default function PeoplePage() {
 
           <Button
             color="primary"
-            size="lg"
+            size="md"
             onPress={() => navigate("/people/add")}
           >
             Add member
@@ -186,9 +200,9 @@ export default function PeoplePage() {
         </div>
       </PageHeader>
 
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-6 flex justify-between items-center">
         <Input
-          size="md"
+          size="sm"
           className="max-w-72"
           placeholder="Type to search"
           isClearable
@@ -203,19 +217,19 @@ export default function PeoplePage() {
 
         {haveSelectedRows && (
           <div className="flex gap-2 items-center">
-            <p className="text-sm text-default-500">
+            <p className="text-tiny text-default-500">
               {numberOfSelectedRows} items selected
             </p>
 
             <Button
-              size="md"
+              size="sm"
               variant="light"
               onPress={() => table.toggleAllRowsSelected(false)}
             >
               Cancel
             </Button>
 
-            <Button size="md" variant="solid">
+            <Button size="sm" variant="solid">
               Delete
             </Button>
           </div>
@@ -225,7 +239,10 @@ export default function PeoplePage() {
       <table className="w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <tr
+              key={headerGroup.id}
+              className="h-10 bg-default-100 [&>:first-child]:rounded-l-lg [&>:last-child]:rounded-r-lg"
+            >
               {headerGroup.headers.map((header) => {
                 // AP-TODO: Don't like this code, need to refactor
                 const width =
@@ -237,7 +254,7 @@ export default function PeoplePage() {
                     style={{
                       width,
                     }}
-                    className="border-b-[1px] border-t-[1px] border-solid border-stroke-weak h-[48px] text-left"
+                    className="text-left px-3 text-sm font-semibold text-default-500"
                   >
                     {header.isPlaceholder
                       ? null
@@ -253,12 +270,9 @@ export default function PeoplePage() {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="h-[80px] border-b-[1px] border-solid border-stroke-weak"
-            >
+            <tr key={row.id} className="h-[60px]">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="text-default-500">
+                <td key={cell.id} className="text-sm text-default-900 px-3">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -267,8 +281,9 @@ export default function PeoplePage() {
         </tbody>
       </table>
 
-      <div className="mt-8 flex justify-between items-center">
+      <div className="mt-6 flex justify-between items-center">
         <Pagination
+          size="sm"
           showControls
           initialPage={pagination.pageIndex + 1}
           total={totalPages}
@@ -277,7 +292,7 @@ export default function PeoplePage() {
           }}
         />
 
-        <p className="text-sm text-default-500">
+        <p className="text-tiny text-default-500">
           Showing {firstRowIndex} - {lastRowIndex} of {table.getRowCount()}
         </p>
       </div>

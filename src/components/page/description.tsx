@@ -5,7 +5,7 @@ interface DescriptionProps {
 }
 
 const Description: React.FC<DescriptionProps> = ({ children }) => {
-  return <p className="text-default-500 mt-3">{children}</p>;
+  return <p className="text-default-500 text-sm mt-1">{children}</p>;
 };
 
 export default Description;
